@@ -16,6 +16,11 @@ getResults <- function(taskId) {
     r = GET(paste('localhost:3000/api/tasks/', taskId, '/file', sep = ''))
     c = content(r)
 
+    if(c$taskClaimable == TRUE) {
+      print("A problem occured during the execution of the task, open an issue on github if you need more informations")
+      return()
+    }
+
     resultAvailable = c$resultsAvailable
 
     if(resultAvailable == TRUE) {

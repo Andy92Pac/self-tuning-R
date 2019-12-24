@@ -81,9 +81,14 @@ deleg <- function(cmd, encryption = T) {
     filename = encryptedFileName
   }
 
+  opts = list(
+    encryption=encryption
+  )
+
   body = list(
     command=paste(deparse(str), collapse = " "),
-    rdata=upload_file(filename))
+    rdata=upload_file(filename),
+    opts=opts)
 
   if(encryption) {
     body[['publicKey']]=upload_file('id_rsa.pub')
