@@ -1,8 +1,3 @@
-#library(rjson)
-#library(encryptr)
-#library(httr)
-#library(R.utils)
-
 #' delegate
 #' This function delegate the execution of the passed command to iExec
 #'
