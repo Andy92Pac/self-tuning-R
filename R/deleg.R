@@ -3,15 +3,29 @@
 #'
 #' @param cmd a command to execute
 #' @param encryption a boolean indicating if encryption is required
+#' @param params either a list of dataframe with the different values to have the function to execute
 #'
-#' @return the function returns the id of the task created
+#' @return the function returns the ids of the deal and tasks created
 #'
 #' @importFrom encryptr genkeys encrypt_file
-#' @importFrom httr POST GET write_disk content upload_file
-#' @importFrom rjson fromJSON
+#' @importFrom httr POST GET write_disk content upload_file add_headers
+#' @importFrom rjson fromJSON toJSON
 #'
 #' @export
-deleg <- function(cmd, encryption = T) {
+deleg <- function(cmd, params = NULL, encryption = T) {
+
+  if(!is.null(params)) {
+    if(is.list(params)) {
+      if(!is.data.frame(params)) {
+        params = expand.grid(params)
+      }
+      params = toJSON(params)
+    }
+    else {
+      print("params is not a list")
+      return()
+    }
+  }
 
   if(encryption) {
     if(!file.exists('id_rsa_iexec.pub')) {
@@ -83,13 +97,15 @@ deleg <- function(cmd, encryption = T) {
   body = list(
     command=paste(deparse(str), collapse = " "),
     rdata=upload_file(filename),
-    opts=opts)
+    params=params,
+    opts=toJSON(opts))
 
   if(encryption) {
     body[['publicKey']]=upload_file('id_rsa.pub')
   }
 
   r = POST('localhost:3000/api/jobs',
+           add_headers(api_key=pkg.env$apiKey),
            body = body
            )
 
@@ -97,8 +113,13 @@ deleg <- function(cmd, encryption = T) {
 
   c = content(r)
 
+  if(r$status_code == 401 || r$status_code == 400 || r$status_code == 500) {
+    print(c$message)
+    return(NULL)
+  }
+
   if(c$status) {
-    return(c$data$job$deal$tasks[[1]])
+    return(c$data)
   }
   else {
     return(NULL)

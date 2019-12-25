@@ -4,10 +4,12 @@
 \alias{getResults}
 \title{Title}
 \usage{
-getResults(taskId)
+getResults(taskId = NULL, jobId = NULL)
 }
 \arguments{
 \item{taskId}{Id of the task to get the results of}
+
+\item{jobId}{Id of the job to get the results of}
 }
 \description{
 Title

@@ -5,15 +5,17 @@
 \title{delegate
 This function delegate the execution of the passed command to iExec}
 \usage{
-deleg(cmd, encryption = T)
+deleg(cmd, params = NULL, encryption = T)
 }
 \arguments{
 \item{cmd}{a command to execute}
 
+\item{params}{either a list of dataframe with the different values to have the function to execute}
+
 \item{encryption}{a boolean indicating if encryption is required}
 }
 \value{
-the function returns the id of the task created
+the function returns the ids of the deal and tasks created
 }
 \description{
 delegate
