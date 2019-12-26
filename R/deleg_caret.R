@@ -92,7 +92,8 @@ deleg_caret <- function(cmd, params = NULL, encryption = T, test_data = NULL) {
   }
 
   opts = list(
-    encryption=encryption
+    encryption=encryption,
+    evaluate=ifelse(is.null(test_data), FALSE, TRUE)
   )
 
   body = list(
