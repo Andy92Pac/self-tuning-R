@@ -1,9 +1,10 @@
-#' deleg
+#' deleg_caret
 #' This function delegate the execution of the passed command to iExec
 #'
 #' @param cmd a command to execute
 #' @param encryption a boolean indicating if encryption is required
 #' @param params either a list of dataframe with the different values to have the function to execute
+#' @param test a dataset to test the created model against to evaluate it
 #'
 #' @return the function returns the ids of the deal and tasks created
 #'
@@ -12,7 +13,7 @@
 #' @importFrom rjson fromJSON toJSON
 #'
 #' @export
-deleg <- function(cmd, params = NULL, encryption = T) {
+deleg_caret <- function(cmd, params = NULL, encryption = T, test = NULL) {
 
   if(!is.null(params)) {
     if(is.list(params)) {
@@ -74,7 +75,7 @@ deleg <- function(cmd, params = NULL, encryption = T) {
                    'data.Rdata',
                    sep = '')
 
-  save(values.list, file = filename)
+  save(values.list, test, file = filename)
 
   if(encryption) {
     encryptedFileName = paste(currentTimestamp,
@@ -107,7 +108,7 @@ deleg <- function(cmd, params = NULL, encryption = T) {
   r = POST('localhost:3000/api/jobs',
            add_headers(api_key=pkg.env$apiKey),
            body = body
-           )
+  )
 
   file.remove(filename)
 

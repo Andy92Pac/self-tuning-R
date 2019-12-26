@@ -2,6 +2,7 @@
 
 export(api)
 export(deleg)
+export(deleg_caret)
 export(getResults)
 importFrom(R.utils,gunzip)
 importFrom(curl,curl_download)
