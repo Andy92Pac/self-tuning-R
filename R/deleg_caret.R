@@ -4,7 +4,7 @@
 #' @param cmd a command to execute
 #' @param encryption a boolean indicating if encryption is required
 #' @param params either a list of dataframe with the different values to have the function to execute
-#' @param test a dataset to test the created model against to evaluate it
+#' @param test_data a dataset to test the created model against to evaluate it
 #'
 #' @return the function returns the ids of the deal and tasks created
 #'
@@ -13,7 +13,7 @@
 #' @importFrom rjson fromJSON toJSON
 #'
 #' @export
-deleg_caret <- function(cmd, params = NULL, encryption = T, test = NULL) {
+deleg_caret <- function(cmd, params = NULL, encryption = T, test_data = NULL) {
 
   if(!is.null(params)) {
     if(is.list(params)) {
@@ -75,7 +75,7 @@ deleg_caret <- function(cmd, params = NULL, encryption = T, test = NULL) {
                    'data.Rdata',
                    sep = '')
 
-  save(values.list, test, file = filename)
+  save(values.list, test_data, file = filename)
 
   if(encryption) {
     encryptedFileName = paste(currentTimestamp,

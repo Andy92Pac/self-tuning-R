@@ -5,7 +5,7 @@
 \title{deleg_caret
 This function delegate the execution of the passed command to iExec}
 \usage{
-deleg_caret(cmd, params = NULL, encryption = T, test = NULL)
+deleg_caret(cmd, params = NULL, encryption = T, test_data = NULL)
 }
 \arguments{
 \item{cmd}{a command to execute}
@@ -14,7 +14,7 @@ deleg_caret(cmd, params = NULL, encryption = T, test = NULL)
 
 \item{encryption}{a boolean indicating if encryption is required}
 
-\item{test}{a dataset to test the created model against to evaluate it}
+\item{test_data}{a dataset to test the created model against to evaluate it}
 }
 \value{
 the function returns the ids of the deal and tasks created
