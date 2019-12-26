@@ -3,11 +3,14 @@
 #' @param taskId Id of the task to get the results of
 #' @param jobId Id of the job to get the results of
 #'
+#' @return the function returns the results and outputs of the tasks requested
+#'
 #' @importFrom encryptr decrypt_file
 #' @importFrom httr GET add_headers
 #' @importFrom R.utils gunzip
 #' @importFrom rjson fromJSON
 #' @importFrom curl curl_download
+#' @importFrom utils read.delim
 #'
 #' @export
 getResults <- function(taskId = NULL, jobId = NULL) {
@@ -65,7 +68,12 @@ getResults <- function(taskId = NULL, jobId = NULL) {
                      file_name = 'output',
                      private_key_path = 'id_rsa')
 
-        load('result.Rdata', envir = .GlobalEnv)
+        result = loadRData('result.Rdata')
+        output = read.delim(file = 'output')
+
+        results = list(
+          result = result,
+          output = output)
 
         file.remove('result.Rdata',
                     'result.Rdata.encryptr.bin',
@@ -74,6 +82,8 @@ getResults <- function(taskId = NULL, jobId = NULL) {
       }
 
       else {
+        results = list()
+
         for (task in c$data$tasks) {
           if(task$taskClaimable == FALSE) {
             curl_download(
@@ -101,18 +111,31 @@ getResults <- function(taskId = NULL, jobId = NULL) {
                          file_name = 'output',
                          private_key_path = 'id_rsa')
 
-            load('result.Rdata', envir = .GlobalEnv)
+            result = loadRData('result.Rdata')
+            output = read.delim(file = 'output')
+
+            results[[task$index]] = list(
+              result = result,
+              output = output)
 
             file.remove('result.Rdata',
                         'result.Rdata.encryptr.bin',
                         'output',
                         'output.encryptr.bin')
+
           }
         }
       }
+
+      return(results)
     }
     else {
       Sys.sleep(time = 20)
     }
   }
+}
+
+loadRData <- function(fileName){
+  load(fileName)
+  get(ls()[ls() != "fileName"])
 }

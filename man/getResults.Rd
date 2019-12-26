@@ -11,6 +11,9 @@ getResults(taskId = NULL, jobId = NULL)
 
 \item{jobId}{Id of the job to get the results of}
 }
+\value{
+the function returns the results and outputs of the tasks requested
+}
 \description{
 Title
 }
