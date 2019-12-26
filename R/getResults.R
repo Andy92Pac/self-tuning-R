@@ -69,7 +69,11 @@ getResults <- function(taskId = NULL, jobId = NULL) {
                      private_key_path = 'id_rsa')
 
         result = loadRData('result.Rdata')
-        output = read.delim(file = 'output')
+        output = tryCatch({
+          return(read.delim(file = 'output'))
+        }, error = function(e) {
+          return(NULL)
+        })
 
         results = list(
           result = result,
@@ -112,9 +116,13 @@ getResults <- function(taskId = NULL, jobId = NULL) {
                          private_key_path = 'id_rsa')
 
             result = loadRData('result.Rdata')
-            output = read.delim(file = 'output')
+            output = tryCatch({
+              return(read.delim(file = 'output'))
+            }, error = function(e) {
+              return(NULL)
+            })
 
-            results[[task$index]] = list(
+            results[[toString(task$index)]] = list(
               result = result,
               output = output)
 
