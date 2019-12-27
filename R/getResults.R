@@ -77,7 +77,8 @@ getResults <- function(taskId = NULL, jobId = NULL) {
 
         results = list(
           result = result,
-          output = output)
+          output = output,
+          metrics = c$data$metrics)
 
         file.remove('result.Rdata',
                     'result.Rdata.encryptr.bin',
@@ -124,7 +125,8 @@ getResults <- function(taskId = NULL, jobId = NULL) {
 
             results[[toString(task$index)]] = list(
               result = result,
-              output = output)
+              output = output,
+              metrics = task$metrics)
 
             file.remove('result.Rdata',
                         'result.Rdata.encryptr.bin',
